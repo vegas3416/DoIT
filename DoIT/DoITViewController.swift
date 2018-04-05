@@ -11,7 +11,7 @@ import UIKit
 class DoITViewController: UITableViewController {
 
 	
-	let itemArray = ["Wash Car", "Find Mike", "Ride Bike"]
+	var itemArray = ["Wash Car", "Find Mike", "Ride Bike"]
 	
 	
 	override func viewDidLoad() {
@@ -47,7 +47,30 @@ class DoITViewController: UITableViewController {
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 	
+	//MARK - Add new items
 	
-
+	@IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+		
+		var textField = UITextField()
+		
+		let alert = UIAlertController(title: "Add new DoIT Item", message: "", preferredStyle: .alert)
+		
+		let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+			
+			//Force unwrap as it will never be empty but can later add a block that doesn't allow user to add an empty item
+			self.itemArray.append(textField.text!)
+			self.tableView.reloadData()
+		}
+		
+		alert.addTextField( configurationHandler: { (alertTextField) in
+			alertTextField.placeholder = "Create New Item"
+			textField = alertTextField
+		})
+		
+		alert.addAction(action)
+		present(alert, animated: true, completion: nil)
+		
+	}
+	
 }
 
