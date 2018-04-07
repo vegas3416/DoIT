@@ -9,34 +9,17 @@
 import UIKit
 
 class DoITViewController: UITableViewController {
-
-	
-	let defaults = UserDefaults.standard
 	
 	var itemArray = [Item]()
 	
+	
+	let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
 		
-		let newItem = Item()
-		newItem.title = "Wash Car"
-		itemArray.append(newItem)
-
-		let newItem2 = Item()
-		newItem2.title = "Wash bike"
-		itemArray.append(newItem2)
-
-		let newItem3 = Item()
-		newItem3.title = "Wash house"
-		itemArray.append(newItem3)
-		itemArray.append(newItem3)
-
-		
-		if let items = defaults.array(forKey: "DoITListArray") as? [Item] {
-			itemArray = items
-		}
+		loadItems()
 		
 	}
 
@@ -62,7 +45,8 @@ class DoITViewController: UITableViewController {
 		
 		itemArray[indexPath.row].done = !itemArray[indexPath.row].done
 		
-		tableView.reloadData()
+		saveItems()
+
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 	
@@ -83,9 +67,9 @@ class DoITViewController: UITableViewController {
 			//Force unwrap as it will never be empty but can later add a block that doesn't allow user to add an empty item
 			self.itemArray.append(addItem)
 			
-			self.defaults.set(self.itemArray, forKey: "DoITListArray")
+			self.saveItems()
 			
-			self.tableView.reloadData()
+			
 		}
 		
 		alert.addTextField( configurationHandler: { (alertTextField) in
@@ -96,6 +80,32 @@ class DoITViewController: UITableViewController {
 		alert.addAction(action)
 		present(alert, animated: true, completion: nil)
 		
+	}
+	
+	func saveItems() {
+		
+		let encoder = PropertyListEncoder()
+		
+		do {
+			let data = try encoder.encode(itemArray)
+			try data.write(to: dataFilePath!)
+		} catch {
+			print("Error coding item array: \(error)")
+		}
+		
+		tableView.reloadData()
+	}
+	
+	func loadItems() {
+	
+		if let data = try? Data(contentsOf: dataFilePath!) {
+			let decoder = PropertyListDecoder()
+			do {
+				itemArray = try decoder.decode([Item].self, from: data)
+			} catch {
+				print("Error decoding item, \(error)")
+			}
+		}
 	}
 	
 }
