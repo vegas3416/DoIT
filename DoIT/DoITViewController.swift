@@ -11,12 +11,19 @@ import UIKit
 class DoITViewController: UITableViewController {
 
 	
+	let defaults = UserDefaults.standard
+	
 	var itemArray = ["Wash Car", "Find Mike", "Ride Bike"]
 	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
+		
+		if let items = defaults.array(forKey: "DoITListArray") as? [String] {
+			itemArray = items
+		}
+		
 	}
 
 	
@@ -59,6 +66,9 @@ class DoITViewController: UITableViewController {
 			
 			//Force unwrap as it will never be empty but can later add a block that doesn't allow user to add an empty item
 			self.itemArray.append(textField.text!)
+			
+			self.defaults.set(self.itemArray, forKey: "DoITListArray")
+			
 			self.tableView.reloadData()
 		}
 		
