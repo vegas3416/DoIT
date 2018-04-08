@@ -7,20 +7,21 @@
 //
 
 import UIKit
+import CoreData
 
 class DoITViewController: UITableViewController {
 	
 	var itemArray = [Item]()
-	
-	
-	let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+	let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
 		
+		//MARK: Delete this comment before production
+		//Just something to kind of see where the database is for testing Nothing more..should delete before Production
+		//printFileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist"))
 		loadItems()
-		
+
 	}
 
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -43,6 +44,9 @@ class DoITViewController: UITableViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		//print(itemArray[indexPath.row])
 		
+//		context.delete(itemArray[indexPath.row])
+//		itemArray.remove(at: indexPath.row)
+
 		itemArray[indexPath.row].done = !itemArray[indexPath.row].done
 		
 		saveItems()
@@ -60,9 +64,10 @@ class DoITViewController: UITableViewController {
 		
 		let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
 			
-			let addItem = Item()
+			let addItem = Item(context: self.context)
 			
 			addItem.title = textField.text!
+			addItem.done = false
 			
 			//Force unwrap as it will never be empty but can later add a block that doesn't allow user to add an empty item
 			self.itemArray.append(addItem)
@@ -84,28 +89,26 @@ class DoITViewController: UITableViewController {
 	
 	func saveItems() {
 		
-		let encoder = PropertyListEncoder()
-		
 		do {
-			let data = try encoder.encode(itemArray)
-			try data.write(to: dataFilePath!)
+			try context.save()
 		} catch {
-			print("Error coding item array: \(error)")
+			print("Error saving context \(error)")
 		}
 		
 		tableView.reloadData()
 	}
 	
 	func loadItems() {
-	
-		if let data = try? Data(contentsOf: dataFilePath!) {
-			let decoder = PropertyListDecoder()
-			do {
-				itemArray = try decoder.decode([Item].self, from: data)
-			} catch {
-				print("Error decoding item, \(error)")
-			}
+		
+		let request: NSFetchRequest<Item> = Item.fetchRequest()
+		
+		do {
+			itemArray = try context.fetch(request)
+		} catch {
+			print("Error fetching data from context \(error)")
 		}
+		
+		
 	}
 	
 }
