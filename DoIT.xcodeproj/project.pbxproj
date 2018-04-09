@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B12F3C002079C0E8008E04D1 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B12F3BFE2079C0E8008E04D1 /* DataModel.xcdatamodeld */; };
+		B12F3C02207A5748008E04D1 /* DoITVCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12F3C01207A5748008E04D1 /* DoITVCExtension.swift */; };
+		B12F3C04207A6456008E04D1 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12F3C03207A6456008E04D1 /* CategoryViewController.swift */; };
 		B1B3C6BD2074641E00DC809E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B3C6BC2074641E00DC809E /* AppDelegate.swift */; };
 		B1B3C6BF2074641E00DC809E /* DoITViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B3C6BE2074641E00DC809E /* DoITViewController.swift */; };
 		B1B3C6C22074641E00DC809E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1B3C6C02074641E00DC809E /* Main.storyboard */; };
@@ -17,6 +19,8 @@
 
 /* Begin PBXFileReference section */
 		B12F3BFF2079C0E8008E04D1 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		B12F3C01207A5748008E04D1 /* DoITVCExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoITVCExtension.swift; sourceTree = "<group>"; };
+		B12F3C03207A6456008E04D1 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		B1B3C6B92074641E00DC809E /* DoIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1B3C6BC2074641E00DC809E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B1B3C6BE2074641E00DC809E /* DoITViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoITViewController.swift; sourceTree = "<group>"; };
@@ -48,7 +52,9 @@
 		B1B358C72079525800B8BC90 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B12F3C03207A6456008E04D1 /* CategoryViewController.swift */,
 				B1B3C6BE2074641E00DC809E /* DoITViewController.swift */,
+				B12F3C01207A5748008E04D1 /* DoITVCExtension.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -170,8 +176,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B12F3C04207A6456008E04D1 /* CategoryViewController.swift in Sources */,
 				B1B3C6BF2074641E00DC809E /* DoITViewController.swift in Sources */,
 				B12F3C002079C0E8008E04D1 /* DataModel.xcdatamodeld in Sources */,
+				B12F3C02207A5748008E04D1 /* DoITVCExtension.swift in Sources */,
 				B1B3C6BD2074641E00DC809E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,18 +9,18 @@
 import UIKit
 import CoreData
 
-class DoITViewController: UITableViewController {
+class DoITViewController: UITableViewController, UISearchBarDelegate {
 	
 	var itemArray = [Item]()
+	var selectedCategory: Category? {
+		didSet{
+			loadItems()
+		}
+	}
 	let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		//MARK: Delete this comment before production
-		//Just something to kind of see where the database is for testing Nothing more..should delete before Production
-		//printFileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist"))
-		loadItems()
 
 	}
 
@@ -68,6 +68,7 @@ class DoITViewController: UITableViewController {
 			
 			addItem.title = textField.text!
 			addItem.done = false
+			addItem.parentCategory = self.selectedCategory
 			
 			//Force unwrap as it will never be empty but can later add a block that doesn't allow user to add an empty item
 			self.itemArray.append(addItem)
@@ -98,9 +99,15 @@ class DoITViewController: UITableViewController {
 		tableView.reloadData()
 	}
 	
-	func loadItems() {
+	func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
 		
-		let request: NSFetchRequest<Item> = Item.fetchRequest()
+		let categoryPredicate = NSPredicate(format: "parentCategory.name MATHES %@", selectedCategory!.name!)
+
+		if let additionalPredicate = predicate {
+			request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+		} else {
+			request.predicate = categoryPredicate
+		}
 		
 		do {
 			itemArray = try context.fetch(request)
@@ -108,8 +115,7 @@ class DoITViewController: UITableViewController {
 			print("Error fetching data from context \(error)")
 		}
 		
-		
+		tableView.reloadData()
 	}
-	
 }
 
