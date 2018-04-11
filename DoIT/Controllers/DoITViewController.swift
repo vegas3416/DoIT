@@ -101,7 +101,7 @@ class DoITViewController: UITableViewController, UISearchBarDelegate {
 	
 	func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
 		
-		let categoryPredicate = NSPredicate(format: "parentCategory.name MATHES %@", selectedCategory!.name!)
+		let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
 
 		if let additionalPredicate = predicate {
 			request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
